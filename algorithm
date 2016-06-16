@@ -65,3 +65,44 @@ if DEBUG:
         Image.fromarray(pred.astype(np.uint8)).save(os.path.join(IMG_DIR, 'sgm_vol.png'))
 
     return c2_vol
+
+
+
+
+
+
+
+
+
+stereo_pairs = [['cones',60,4]]
+for pair_name, disp_max, scale in stereo_pairs:
+    print(pair_name)
+    x0 = np.array(Image.open('dir' % pair_name), dtype=np.float64)
+    x1 = np.array(Image.open('dir' % pair_name), dtype=np.float64)
+    height = x0.shape[0]
+    width = x0.shape[1]
+    main_.init()
+    x0c = main_.cross()
+    x1c = main_.cross()
+
+    c2_1 = match(0)
+    c2_0 = match(1)
+
+    d0 = np.argmin(c2_0)
+    d1 = np.argmin(c2_1)
+
+    outlier = main_.outlier_detec(d0,d1)
+
+    for i in range(6):
+        d0, outlier = main_.iterative_vote()
+
+    d0 = main_.interpolation(x0,d0,outlier)
+
+    d0 = main_.discontinuity_adj(d0,c2_0)
+
+    d0 = main_.enhancement(d0,c2_0)
+
+    do = median_filter(d0,a,b)
+
+    pred = astype(np.float64)*scale
+    Image.fromarray(pred.astype(np.uint8)).save('DIR/%s.png' % pair_name)
