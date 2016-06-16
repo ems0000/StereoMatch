@@ -1,0 +1,30 @@
+import os
+import pickle
+import sys
+
+from scipy.ndimage.filters import median_filter
+import numpy as np
+from PIL import image
+import cv2
+import pyximport; pyximport.install()
+import main_
+from skimage import io, exposure, img_as_uint, img_as_float
+
+DEBUG = 1
+IMG_DIR = ''
+
+def match(x0,x1):
+    # ad
+    ad_vol = main_.ad_vol(x0,x1)
+
+    if DEBUG:
+        pred = ad_vol.argmin(0).astype(np.float64)*scale
+        Image.fromarray(pred.astype(np.uint8)).save(os.path.join(IMG_DIR,'absdiff_vol.png'))
+
+    # census
+    x0c = main_.census_transform(x0)
+    x1c = main_.census_transform(x1)
+    census_vol = np.ones((disp_max, height, width))*np.inf
+    for i in range (disp_max):
+        census_vol[i,:,i:] = np.sum(x0c[:,i:] != x1c[:,:width - i],2)
+    census_vol /= 3
