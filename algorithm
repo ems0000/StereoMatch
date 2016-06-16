@@ -93,8 +93,35 @@ for pair_name, disp_max, scale in stereo_pairs:
 
     outlier = main_.outlier_detec(d0,d1)
 
+    if DEBUG:
+        img = x0.copy()
+        #B
+        img[outlier == 0] = 0
+        #R
+        img[outlier == 1,0] = 255
+        img[outlier == 1,1] = 0
+        img[outlier == 1,2] = 0
+        #G
+        img[outlier == 2,0] = 0
+        img[outlier == 2,1] = 255
+        img[outlier == 2,2] = 0
+        Image.fromarray(img.astype(np.uint8)).save(os.path.join(IMG_DIR, 'outlier.png'))
+
     for i in range(6):
         d0, outlier = main_.iterative_vote()
+
+    if DEBUG: 
+        Image.fromarray((d0 * scale).astype(np.uint8)).save(os.path.join(IMG_DIR,
+            'iterative_region_voting.png'))
+        img = x0.copy()
+        img[outlier == 0] = 0
+        img[outlier == 1, 0] = 255
+        img[outlier == 1, 1] = 0
+        img[outlier == 1, 2] = 0
+        img[outlier == 2, 0] = 0
+        img[outlier == 2, 1] = 255
+        img[outlier == 2, 2] = 0
+        Image.fromarray(img.astype(np.uint8)).save(os.path.join(IMG_DIR, 'outlier2.png'))
 
     d0 = main_.interpolation(x0,d0,outlier)
 
