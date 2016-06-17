@@ -57,7 +57,7 @@ if DEBUG:
         pred = adcensus_vol.argmin(0).astype(np.float64) * scale
         Image.fromarray(pred.astype(np.uint8)).save(os.path.join(IMG_DIR, 'cbca_vol.png'))
 
-    # semi-global matching scanline
+    # sgm scanline
     c2_vol = main_.sgm(x0, x1, adcensus_vol)
 
     if DEBUG:
