@@ -133,3 +133,8 @@ for pair_name, disp_max, scale in stereo_pairs:
 
     pred = astype(np.float64)*scale
     Image.fromarray(pred.astype(np.uint8)).save('DIR/%s.png' % pair_name)
+    
+    
+    
+    
+    cv2.imwrite('res.png',d0)
