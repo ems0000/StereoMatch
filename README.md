@@ -12,4 +12,4 @@ use the following libraries:
         OpenCV (optional)
 
   ref:
-      On building an accurate stereo matching system on graphics hardware
+        On building an accurate stereo matching system on graphics hardware
