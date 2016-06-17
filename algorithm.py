@@ -5,12 +5,12 @@ import sys
 from scipy.ndimage.filters import median_filter
 import numpy as np
 from PIL import image
-import cv2
-import pyximport; pyximport.install()
+#import cv2
+#import pyximport; pyximport.install()
 import main_
 from skimage import io, exposure, img_as_uint, img_as_float
 
-DEBUG = 1
+DEBUG = 0
 IMG_DIR = ''
 
 def match(x0,x1):
@@ -91,7 +91,7 @@ for pair_name, disp_max, scale in stereo_pairs:
     d0 = np.argmin(c2_0)
     d1 = np.argmin(c2_1)
 
-    outlier = main_.outlier_detec(d0,d1)
+    #outlier = main_.outlier_detec(d0,d1)
 
     if DEBUG:
         img = x0.copy()
@@ -107,8 +107,8 @@ for pair_name, disp_max, scale in stereo_pairs:
         img[outlier == 2,2] = 0
         Image.fromarray(img.astype(np.uint8)).save(os.path.join(IMG_DIR, 'outlier.png'))
 
-    for i in range(6):
-        d0, outlier = main_.iterative_vote()
+    #for i in range(6):
+    #    d0, outlier = main_.iterative_vote()
 
     if DEBUG: 
         Image.fromarray((d0 * scale).astype(np.uint8)).save(os.path.join(IMG_DIR,
@@ -123,13 +123,13 @@ for pair_name, disp_max, scale in stereo_pairs:
         img[outlier == 2, 2] = 0
         Image.fromarray(img.astype(np.uint8)).save(os.path.join(IMG_DIR, 'outlier2.png'))
 
-    d0 = main_.interpolation(x0,d0,outlier)
+    #d0 = main_.interpolation(x0,d0,outlier)
 
-    d0 = main_.discontinuity_adj(d0,c2_0)
+    #d0 = main_.discontinuity_adj(d0,c2_0)
 
-    d0 = main_.enhancement(d0,c2_0)
+    #d0 = main_.enhancement(d0,c2_0)
 
-    do = median_filter(d0,a,b)
+    #do = median_filter(d0,a,b)
 
     pred = astype(np.float64)*scale
     Image.fromarray(pred.astype(np.uint8)).save('DIR/%s.png' % pair_name)
@@ -137,4 +137,4 @@ for pair_name, disp_max, scale in stereo_pairs:
     
     
     
-    cv2.imwrite('res.png',d0)
+    #cv2.imwrite('res.png',d0)
